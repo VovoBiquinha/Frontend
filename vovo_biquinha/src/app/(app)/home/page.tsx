@@ -11,7 +11,7 @@ export default function HomePage() {
           <CardHeader className="flex flex-row items-center space-x-2">
             <ChartNoAxesCombined className="w-6 h-6" />
             <CardTitle className="text-xl">
-              Atendimentos realizados por mim
+              <p>Atendimentos realizados por mim</p>
             </CardTitle>
           </CardHeader>
           <CardContent className="flex justify-center justify-center p-8">
@@ -27,7 +27,7 @@ export default function HomePage() {
             Atendimentos passados
           </Button>
           <Button className="bg-sky-900 hover:bg-sky-700 focus:bg-sky-500">
-            Próximos passados
+            Próximos atendimentos
           </Button>
         </div>
       </div>
