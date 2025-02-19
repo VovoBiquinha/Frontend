@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -16,14 +16,7 @@ export const ViewStudentInfo = ({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  children: React.ReactNode;
 }) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleSwitchChange = (checked: boolean) => {
-    setIsChecked(checked);
-  };
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -69,10 +62,7 @@ export const ViewStudentInfo = ({
                   Uso de medicamento
                 </Label>
                 <div className="justify-end flex">
-                  <Switch
-                    checked={isChecked}
-                    onCheckedChange={handleSwitchChange}
-                  />
+                  <Switch />
                 </div>
               </div>
               <div className="flex flex-col space-y-4">

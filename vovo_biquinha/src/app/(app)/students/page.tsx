@@ -14,11 +14,13 @@ import { Search, UserPlus } from 'lucide-react';
 import { useState } from 'react';
 import AvatarUser from '@/components/avatar';
 import { ViewStudentInfo } from '@/components/modals/view-student-informations';
+import { CreateNewStudent } from '@/components/modals/create-student-modal';
 
 export default function StudentsPage() {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   return (
     <div className="mt-20 w-1/2 mx-auto text-start">
@@ -55,7 +57,10 @@ export default function StudentsPage() {
           />
         </div>
 
-        <Button className="bg-transparent text-sky-500 hover:bg-transparent border-2 border-sky-500 rounded-lg p-7 mt-4 font-bold">
+        <Button
+          onClick={() => setIsCreateModalOpen(true)}
+          className="bg-transparent text-sky-500 hover:bg-transparent border-2 border-sky-500 rounded-lg p-7 mt-4 font-bold"
+        >
           <UserPlus className="h-5 w-5" strokeWidth={3} />
           Cadastrar Aluno
         </Button>
@@ -81,7 +86,7 @@ export default function StudentsPage() {
               <TableCell>Sim</TableCell>
               <TableCell className="text-right">
                 <Button
-                  onClick={() => setModalOpen(true)}
+                  onClick={() => setIsViewModalOpen(true)}
                   className="bg-transparent text-sky-500 hover:bg-transparent border-2 border-sky-500 rounded-lg"
                 >
                   Ver Tudo
@@ -92,9 +97,14 @@ export default function StudentsPage() {
         </Table>
       </div>
 
-      <ViewStudentInfo isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        <p>Detalhes do aluno</p>
-      </ViewStudentInfo>
+      <ViewStudentInfo
+        isOpen={isViewModalOpen}
+        onClose={() => setIsViewModalOpen(false)}
+      />
+      <CreateNewStudent
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
     </div>
   );
 }

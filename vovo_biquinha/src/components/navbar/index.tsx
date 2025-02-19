@@ -11,7 +11,7 @@ export default function Navbar() {
         Acessar Alunos
       </Link>
 
-      <Link href="/my-services">Meus Atendimentos</Link>
+      {/* <Link href="/my-services">Meus Atendimentos</Link> */}
 
       <div className="ml-auto">
         <AvatarUser />
