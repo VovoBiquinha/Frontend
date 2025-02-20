@@ -14,7 +14,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       <div>
         <Navbar />
 
-        <main className="pt-20">{children}</main>
+        <main className="pt-40">{children}</main>
       </div>
     </ThemeProvider>
   );

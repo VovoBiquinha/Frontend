@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ThemeToggle } from '../themes/theme-toggle';
+import Link from 'next/link';
 // import { useRouter } from "next/navigation";
 // import { useState, useEffect } from "react";
 
@@ -55,8 +56,10 @@ export default function AvatarUser() {
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="cursor-pointer">
-            <User className="mr-2 h-4 w-4" />
-            <span>Perfil</span>
+            <Link href="/profile" className="flex">
+              <User className="mr-2 h-4 w-4" />
+              <span>Perfil</span>
+            </Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem
