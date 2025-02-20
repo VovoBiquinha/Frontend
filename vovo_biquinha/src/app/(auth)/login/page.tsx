@@ -1,11 +1,16 @@
 'use client';
 
-import { LoginForm } from '@/components/login-form';
+import { LoginForm } from '@/components/forms/login-form';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const router = useRouter();
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    router.push('/home');
+  };
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -13,7 +18,7 @@ export default function LoginPage() {
         <div className="flex justify-center gap-2 md:justify-start"></div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm onSubmit={() => router.push('/home')} />
+            <LoginForm onSubmit={handleSubmit} />
           </div>
         </div>
       </div>
