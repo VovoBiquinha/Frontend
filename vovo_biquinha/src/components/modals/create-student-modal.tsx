@@ -1,41 +1,43 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Input } from "@/components/ui/input";
-import axios from "axios";
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Input } from '@/components/ui/input';
+import axios from 'axios';
 
 export const CreateNewStudent = ({
   isOpen,
   onClose,
+  fetchStudents,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  fetchStudents: () => void;
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [studentData, setStudentData] = useState({
-    nome: "",
-    sobrenome: "",
-    dataNascimento: "",
-    endereco: "",
-    escola: "",
-    diagnostico: "",
-    usoMedicamento: false,
-    nomeMedicamento: "",
-    posologia: "",
-    servicos: "",
+    first_name: '',
+    last_name: '',
+    birth_date: '',
+    address: '',
+    school: '',
+    diagnosis: '',
+    medication_usage: false,
+    medication_name: '',
+    dosage: '',
+    services: '',
   });
 
   const handleSwitchChange = (checked: boolean) => {
     setIsChecked(checked);
-    setStudentData({ ...studentData, usoMedicamento: checked });
+    setStudentData({ ...studentData, medication_usage: checked });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,19 +48,20 @@ export const CreateNewStudent = ({
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/alunos/",
+        'http://127.0.0.1:8000/alunos/',
         studentData,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
 
-      console.log("Aluno cadastrado:", response.data);
+      console.log('Aluno cadastrado:', response.data);
+      fetchStudents();
       onClose();
     } catch (error) {
-      console.error("Erro ao cadastrar aluno:", error);
+      console.error('Erro ao cadastrar aluno:', error);
     }
   };
 
@@ -78,8 +81,8 @@ export const CreateNewStudent = ({
                 <Input
                   className="text-left h-8"
                   type="text"
-                  name="nome"
-                  value={studentData.nome}
+                  name="first_name"
+                  value={studentData.first_name}
                   onChange={handleChange}
                   placeholder="Nome do aluno"
                 ></Input>
@@ -90,8 +93,8 @@ export const CreateNewStudent = ({
                 <Input
                   className="text-left h-8"
                   type="text"
-                  name="sobrenome"
-                  value={studentData.sobrenome}
+                  name="last_name"
+                  value={studentData.last_name}
                   onChange={handleChange}
                   placeholder="Sobrenome do aluno"
                 ></Input>
@@ -103,8 +106,8 @@ export const CreateNewStudent = ({
                 <Input
                   className="text-left h-8"
                   type="date"
-                  name="dataNascimento"
-                  value={studentData.dataNascimento}
+                  name="birth_date"
+                  value={studentData.birth_date}
                   onChange={handleChange}
                   placeholder="DD/MM/AAAA"
                 ></Input>
@@ -133,8 +136,8 @@ export const CreateNewStudent = ({
                 <Input
                   className="text-right h-8"
                   type="text"
-                  name="diagnostico"
-                  value={studentData.diagnostico}
+                  name="diagnosis"
+                  value={studentData.diagnosis}
                   onChange={handleChange}
                   placeholder="Diagnóstico"
                 ></Input>
@@ -160,8 +163,8 @@ export const CreateNewStudent = ({
                     <Input
                       className="text-right h-8"
                       type="text"
-                      name="nomeMedicamento"
-                      value={studentData.nomeMedicamento}
+                      name="medication_name"
+                      value={studentData.medication_name}
                       onChange={handleChange}
                       placeholder="Medicamento"
                     ></Input>
@@ -171,8 +174,8 @@ export const CreateNewStudent = ({
                     <Input
                       className="text-right h-8"
                       type="text"
-                      name="posologia"
-                      value={studentData.posologia}
+                      name="dosage"
+                      value={studentData.dosage}
                       onChange={handleChange}
                       placeholder="Posologia"
                     ></Input>
@@ -186,8 +189,8 @@ export const CreateNewStudent = ({
                 <Input
                   className="text-right h-8"
                   type="text"
-                  name="servicos"
-                  value={studentData.servicos}
+                  name="services"
+                  value={studentData.services}
                   onChange={handleChange}
                   placeholder="Diagnóstico"
                 ></Input>

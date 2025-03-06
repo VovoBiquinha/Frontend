@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import {
@@ -11,16 +12,40 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, UserPlus } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AvatarUser from '@/components/avatar';
 import { ViewStudentInfo } from '@/components/modals/view-student-informations';
 import { CreateNewStudent } from '@/components/modals/create-student-modal';
+import axios from 'axios';
+
+interface Student {
+  _id: string;
+  first_name: string;
+  last_name: string;
+  birth_date: string;
+  medication_usage: boolean;
+  [key: string]: any;
+}
 
 export default function StudentsPage() {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState('');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [students, setStudents] = useState<Student[]>([]);
+
+  const fetchStudents = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/alunos/');
+      setStudents(response.data);
+    } catch (error) {
+      console.error('Erro na busca de aluno', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
 
   return (
     <div className="mt-20 w-1/2 mx-auto text-start">
@@ -77,22 +102,34 @@ export default function StudentsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium flex items-center">
-                <AvatarUser />
-                Joãozinho 123
-              </TableCell>
-              <TableCell>4</TableCell>
-              <TableCell>Sim</TableCell>
-              <TableCell className="text-right">
-                <Button
-                  onClick={() => setIsViewModalOpen(true)}
-                  className="bg-transparent text-sky-500 hover:bg-transparent border-2 border-sky-500 rounded-lg"
-                >
-                  Ver Tudo
-                </Button>
-              </TableCell>
-            </TableRow>
+            {students.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={4} className="text-center">
+                  Nenhum aluno cadastrado ainda
+                </TableCell>
+              </TableRow>
+            ) : (
+              students.map((student) => (
+                <TableRow key={student._id}>
+                  <TableCell className="font-medium flex items-center">
+                    <AvatarUser />
+                    {student.first_name} {student.last_name}
+                  </TableCell>
+                  <TableCell>{student.birth_date}</TableCell>
+                  <TableCell>
+                    {student.medication_usage ? 'Sim' : 'Não'}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      onClick={() => setIsViewModalOpen(true)}
+                      className="bg-transparent text-sky-500 hover:bg-transparent border-2 border-sky-500 rounded-lg"
+                    >
+                      Ver Tudo
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>
@@ -104,6 +141,7 @@ export default function StudentsPage() {
       <CreateNewStudent
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
+        fetchStudents={fetchStudents}
       />
     </div>
   );

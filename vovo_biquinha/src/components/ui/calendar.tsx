@@ -63,14 +63,17 @@ function Calendar({
         day_disabled: 'text-muted-foreground opacity-50',
         ...classNames,
       }}
-      components={{
-        IconLeft: ({ className, ...props }) => (
-          <ChevronLeft className={cn('h-4 w-4', className)} {...props} />
-        ),
-        IconRight: ({ className, ...props }) => (
-          <ChevronRight className={cn('h-4 w-4', className)} {...props} />
-        ),
-      }}
+      components={
+        {
+          IconLeft: ({ className, ...props }: { className?: string }) => (
+            <ChevronLeft className={cn('h-4 w-4', className)} {...props} />
+          ),
+          IconRight: ({ className, ...props }: { className?: string }) => (
+            <ChevronRight className={cn('h-4 w-4', className)} {...props} />
+          ),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any
+      }
       {...props}
     />
   );
