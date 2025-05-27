@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChartNoAxesCombined, Calendar as Calendario } from 'lucide-react';
-import { Calendar } from '@/components/ui/calendar';
-import React from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartNoAxesCombined, Calendar as Calendario } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import React from "react";
+import { ptBR } from "date-fns/locale";
 
 export default function HomePage() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -29,19 +30,20 @@ export default function HomePage() {
         </div>
         <div>
           <div>
-            <Card className="w-full bg-sky-500 text-white h-full">
+            <Card className="w-[350px] bg-sky-500 text-white h-full">
               <CardHeader className="flex flex-row items-center space-x-2">
                 <Calendario className="w-6 h-6" />
                 <CardTitle className="text-xl">
                   <p>Atendimentos</p>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="flex justify-center items-center p-4 h-[350px]">
+              <CardContent className="flex justify-center items-center p-4 h-full w-full">
                 <Calendar
                   mode="single"
                   selected={date}
                   onSelect={setDate}
-                  className="rounded-md border bg-white text-black w-full h-full"
+                  className="rounded-md border bg-white text-black capitalize"
+                  locale={ptBR}
                 />
               </CardContent>
             </Card>

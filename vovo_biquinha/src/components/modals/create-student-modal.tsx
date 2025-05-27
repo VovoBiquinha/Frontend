@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Input } from '@/components/ui/input';
-import axios from 'axios';
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import axios from "axios";
 
 export const CreateNewStudent = ({
   isOpen,
@@ -23,16 +23,16 @@ export const CreateNewStudent = ({
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [studentData, setStudentData] = useState({
-    first_name: '',
-    last_name: '',
-    birth_date: '',
-    address: '',
-    school: '',
-    diagnosis: '',
+    first_name: "",
+    last_name: "",
+    birth_date: "",
+    address: "",
+    school: "",
+    diagnosis: "",
     medication_usage: false,
-    medication_name: '',
-    dosage: '',
-    services: '',
+    medication_name: "",
+    dosage: "",
+    services: "",
   });
 
   const handleSwitchChange = (checked: boolean) => {
@@ -48,20 +48,20 @@ export const CreateNewStudent = ({
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8000/alunos/',
+        "http://127.0.0.1:8000/alunos/",
         studentData,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       );
 
-      console.log('Aluno cadastrado:', response.data);
+      console.log("Aluno cadastrado:", response.data);
       fetchStudents();
       onClose();
     } catch (error) {
-      console.error('Erro ao cadastrar aluno:', error);
+      console.error("Erro ao cadastrar aluno:", error);
     }
   };
 
@@ -116,8 +116,11 @@ export const CreateNewStudent = ({
                 <Label className="text-left font-bold">Endereço</Label>
                 <Input
                   className="text-left h-8"
-                  type="address"
+                  type="text"
                   placeholder="Endereço do aluno"
+                  value={studentData.address}
+                  onChange={handleChange}
+                  name="address"
                 ></Input>
               </div>
               <div className="flex flex-col gap-2">
@@ -126,6 +129,9 @@ export const CreateNewStudent = ({
                   className="text-left h-8"
                   type="text"
                   placeholder="Escola em que estuda"
+                  value={studentData.school}
+                  onChange={handleChange}
+                  name="school"
                 ></Input>
               </div>
             </div>
