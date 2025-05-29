@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 
 interface StudentInformation {
   _id?: string;
@@ -36,15 +37,52 @@ export const ViewStudentInfo = ({
 }) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         onClose();
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
   if (!isOpen || !student) return null;
+
+  const handleDownloadReport = async () => {
+    console.log('Tentando extrair relatório de:', student);
+    const studentId = student.id;
+
+    if (!studentId) {
+      console.log('Student objeto no modal:', student);
+      alert('ID do aluno não encontrado');
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/report/${studentId}`,
+        {
+          method: 'GET',
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Erro ao baixar relatório');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `relatorio_aluno_${studentId}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao baixar relatório');
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -52,7 +90,7 @@ export const ViewStudentInfo = ({
         <DialogHeader className="rounded-xl p-4 m-4 text-center items-center bg-white">
           <DialogTitle>
             {student.first_name}
-            {""} {student.last_name}
+            {''} {student.last_name}
           </DialogTitle>
         </DialogHeader>
         <div className="bg-white p-4 rounded-xl">
@@ -104,10 +142,10 @@ export const ViewStudentInfo = ({
                       {student?.medication_usage && (
                         <>
                           <p>
-                            Medicamento:{" "}
-                            {student.medication_name || "Não informado"}
+                            Medicamento:{' '}
+                            {student.medication_name || 'Não informado'}
                           </p>
-                          <p>Posologia: {student.dosage || "Não informada"}</p>
+                          <p>Posologia: {student.dosage || 'Não informada'}</p>
                         </>
                       )}
                     </Label>
@@ -123,7 +161,10 @@ export const ViewStudentInfo = ({
           </div>
         </div>
         <div className="flex justify-center">
-          <Button className="bg-white text-sky-500 hover:bg-sky-100 border-white-500 rounded-lg">
+          <Button
+            className="bg-white text-sky-500 hover:bg-sky-100 border-white-500 rounded-lg"
+            onClick={handleDownloadReport}
+          >
             Extrair Relatório
           </Button>
         </div>
@@ -136,7 +177,6 @@ export const ViewStudentInfo = ({
           </Button>
         </DialogFooter>
       </DialogContent>
-      ;
     </Dialog>
   );
 };
